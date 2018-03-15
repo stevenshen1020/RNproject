@@ -1,58 +1,43 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
+import { Navigation } from 'react-native-navigation';
+import { registerScreens } from './app/screen/index';
 
-import React, { Component } from 'react';
-import {
-  Platform,
-  StyleSheet,
-  Text,
-  View
-} from 'react-native';
+// 执行注册页面方法
+registerScreens();
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' +
-    'Cmd+D or shake for dev menu',
-  android: 'RN 之旅123,\n' +
-    'Shake or press menu button for dev menu wahah对的ssdddh',
-});
-
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
-        <Text style={styles.instructions}>
-          To get started, edit App.js
-        </Text>
-        <Text style={styles.instructions}>
-          {instructions}
-        </Text>
-      </View>
-    );
+// 启动app
+Navigation.startTabBasedApp({
+  tabs: [
+    {
+      label: 'home',
+      screen: 'home',
+      title: '首页',
+      icon: require('./app/assets/images/home.png'),
+    },
+    {
+      screen: 'unlock',
+      title: '开锁',
+      icon: require('./app/assets/images/add.png'),
+      iconInsets: {
+        top: 5,
+        left: 0,
+        bottom: -5,
+        right: 0
+      },
+    },
+    {
+      label: 'mine',
+      screen: 'mine',
+      title: '我的',
+      icon: require('./app/assets/images/mine.png'),
+    }
+  ],
+  appStyle: {
+    navBarBackgroundColor: '#263136',//顶部导航栏背景颜色
+    navBarTextColor: 'white'//顶部导航栏字体颜色
+  },
+  tabsStyle: {
+    tabBarButtonColor: '#ccc',//底部按钮颜色
+    tabBarSelectedButtonColor: '#08cb6a',//底部按钮选择状态颜色
+    tabBarBackgroundColor: '#E6E6E6'//顶部条背景颜色
   }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
 });
