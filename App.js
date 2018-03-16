@@ -1,43 +1,188 @@
-import { Navigation } from 'react-native-navigation';
-import { registerScreens } from './app/screen/index';
+/**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ * @flow
+ */
 
-// 执行注册页面方法
-registerScreens();
+import React, { Component } from 'react';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from 'react-native';
 
-// 启动app
-Navigation.startTabBasedApp({
-  tabs: [
-    {
-      label: 'home',
-      screen: 'home',
-      title: '首页',
-      icon: require('./app/assets/images/home.png'),
+import {TabNavigator, StackNavigator} from 'react-navigation'
+import HomeScreen from './app/screen/home/index';
+import MineScreen from './app/screen/mine/index';
+import ModalScreen from './app/screen/modal/index';
+import UnlockScreen from './app/screen/unlock/index';
+
+
+
+console.disableYellowBox = true;
+
+const MainTab = TabNavigator(
+  {
+    Home: {
+      screen: HomeScreen,
+      navigationOptions: {
+        title: "首页",
+        tabBarLabel: '首页',
+        tabBarIcon: ({ tintColor }) => (
+            <Image
+                source={
+                    require('./app/assets/images/home.png')
+                }
+                style={[styles.icon,{tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
+            />
+        )
+      }
     },
-    {
-      screen: 'unlock',
-      title: '开锁',
-      icon: require('./app/assets/images/add.png'),
-      iconInsets: {
-        top: 5,
-        left: 0,
-        bottom: -5,
-        right: 0
-      },
+    Unlock: {
+      screen: UnlockScreen,
+      navigationOptions: {
+        tabBarLabel: '解锁',
+        header:null,
+        tabBarIcon: ({ tintColor }) => (
+            <Image
+                source={
+                    require('./app/assets/images/add.png')
+                }
+                style={[styles.icon,{tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
+            />
+        ),
+        headerTitleStyle: {
+            alignSelf:'center'
+        }
+      }
     },
-    {
-      label: 'mine',
-      screen: 'mine',
-      title: '我的',
-      icon: require('./app/assets/images/mine.png'),
+    Mine: {
+      screen: MineScreen,
+      //以下参数也可放置在MinePage.js页面
+      navigationOptions: {
+        header:null,
+        tabBarLabel: '我的',
+        tabBarIcon: ({ tintColor }) => (
+          <Image
+            source={
+              require('./app/assets/images/mine.png')
+            }
+            style={[styles.icon,{tintColor: tintColor}]}// {tintColor: tintColor} 选中的图片和文字颜色
+          />
+        ),
+        headerTitleStyle: {
+          alignSelf:'center'
+        }
+      }
     }
-  ],
-  appStyle: {
-    navBarBackgroundColor: '#263136',//顶部导航栏背景颜色
-    navBarTextColor: 'white'//顶部导航栏字体颜色
   },
-  tabsStyle: {
-    tabBarButtonColor: '#ccc',//底部按钮颜色
-    tabBarSelectedButtonColor: '#08cb6a',//底部按钮选择状态颜色
-    tabBarBackgroundColor: '#E6E6E6'//顶部条背景颜色
+  {
+    animationEnabled: false, // 切换页面时不显示动画
+    tabBarPosition: 'bottom', // 显示在底端，android 默认是显示在页面顶端的
+    swipeEnabled: true, // 禁止左右滑动
+    backBehavior: 'none', // 按 back 键是否跳转到第一个 Tab， none 为不跳转
+    tabBarOptions: {
+      activeTintColor: '#0F88EE', // 文字和图片选中颜色
+      inactiveTintColor: '#888', // 文字和图片默认颜色
+      showIcon: true, // android 默认不显示 icon, 需要设置为 true 才会显示
+      indicatorStyle: {height: 0}, // android 中TabBar下面会显示一条线，高度设为 0 后就不显示线了， 不知道还有没有其它方法隐藏？？？
+      style: {
+        backgroundColor: '#fff', // TabBar 背景色
+        height:50
+      },
+      labelStyle: {
+        fontSize: 11, // 文字大小,
+        marginTop: 0,
+      }
+    }
   }
+)
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    icon:{
+        width:20,
+        height:20
+    }
 });
+
+const RootStack = StackNavigator(
+  {
+    Main: {
+      screen: MainTab
+    },
+    MyModal: {
+      screen: ModalScreen
+    },
+    Mine: {
+      screen: MineScreen
+    }
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none'
+  }
+)
+
+export default class App extends Component {
+  render() {
+    return <RootStack />
+  }
+}
+// export default TabNavigator({
+//   Home: { screen: HomeScreen },
+//   Settings: { screen: SettingsScreen },
+// });
+
+
+
+// const instructions = Platform.select({
+//   ios: 'Press Cmd+R to reload,\n' +
+//     'Cmd+D or shake for dev menu',
+//   android: 'RN 之旅123,\n' +
+//     'Shake or press menu button for dev menu wahah对的ssdddh',
+// });
+
+// type Props = {};
+// export default class App extends Component<Props> {
+//   render() {
+//     return (
+//       <View style={styles.container}>
+//         <Text style={styles.welcome}>
+//           Welcome to React Native!
+//         </Text>
+//         <Text style={styles.instructions}>
+//           To get started, edit App.js
+//         </Text>
+//         <Text style={styles.instructions}>
+//           {instructions}
+//         </Text>
+//       </View>
+//     );
+//   }
+// }
+
+// const styles = StyleSheet.create({
+//   container: {
+//     flex: 1,
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     backgroundColor: '#F5FCFF',
+//   },
+//   welcome: {
+//     fontSize: 20,
+//     textAlign: 'center',
+//     margin: 10,
+//   },
+//   instructions: {
+//     textAlign: 'center',
+//     color: '#333333',
+//     marginBottom: 5,
+//   },
+// });

@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Button } from 'react-native';
 
-
-type Props = {};
-export default class UnlockHome extends Component<Props> {
-
+export default class UnlockScreen extends React.Component {
   render() {
     return (
-      <View>
-        <Text>Unlock page</Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        { /* other code from before here */ }
+        <Text style={{ fontSize: 30 }}>Unlock</Text>
       </View>
     );
   }
